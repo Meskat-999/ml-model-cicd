@@ -12,7 +12,7 @@ def load_model():
     )
 
 st.title("Sentiment Analysis System")
-st.write("Using a Pre-trained DistilBERT Model")
+st.write("Using a Pre-trained DistilBERT Model - CI/CD Test")
 
 text = st.text_area("Enter your text:")
 
