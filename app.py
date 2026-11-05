@@ -1,29 +1,29 @@
 
-import gradio as gr
+import streamlit as st
 from transformers import pipeline
 
-sentiment_model = pipeline(
-    "sentiment-analysis",
-    model="distilbert/distilbert-base-uncased-finetuned-sst-2-english"
-)
+st.set_page_config(page_title="Sentiment Analysis")
 
-def analyze_sentiment(text):
-    if not text.strip():
-        return "Please enter some text."
+@st.cache_resource
+def load_model():
+    return pipeline(
+        "sentiment-analysis",
+        model="distilbert/distilbert-base-uncased-finetuned-sst-2-english"
+    )
 
-    result = sentiment_model(text)[0]
+st.title("Sentiment Analysis System")
+st.write("Using a Pre-trained DistilBERT Model")
 
-    label = result["label"]
-    score = round(result["score"] * 100, 2)
+text = st.text_area("Enter your text:")
 
-    return f"Sentiment: {label}\nConfidence: {score}%"
+if st.button("Analyze Sentiment"):
+    if text.strip():
+        with st.spinner("Analyzing..."):
+            model = load_model()
+            result = model(text)[0]
 
-app = gr.Interface(
-    fn=analyze_sentiment,
-    inputs=gr.Textbox(lines=3, label="Enter your text"),
-    outputs=gr.Textbox(label="Sentiment Result"),
-    title="Sentiment Analysis System",
-    description="Analyze text using a pre-trained DistilBERT model."
-)
-
-app.launch()
+        st.success("Analysis Completed!")
+        st.write("Sentiment:", result["label"])
+        st.write("Confidence:", f'{result["score"] * 100:.2f}%')
+    else:
+        st.warning("Please enter some text.")
