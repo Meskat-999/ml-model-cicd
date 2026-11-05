@@ -11,7 +11,7 @@ def load_model():
         model="distilbert/distilbert-base-uncased-finetuned-sst-2-english"
     )
 
-st.title("Sentiment Analysis System")
+st.title("Sentiment Analysis System_1")
 st.write("Using a Pre-trained DistilBERT Model - CI/CD Test")
 
 text = st.text_area("Enter your text:")
